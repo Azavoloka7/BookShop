@@ -1,0 +1,158 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : jdbc:mysql://localhost:3308/ALibrary
+Source Server Version : 80035
+Source Host           : localhost:3308
+Source Database       : bookshop
+
+Target Server Type    : MYSQL
+Target Server Version : 80035
+File Encoding         : 65001
+
+Date: 2024-02-27 10:57:50
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `books`
+-- ----------------------------
+DROP TABLE IF EXISTS `books`;
+CREATE TABLE `books` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`title`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`author`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`price`  decimal(10,2) NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+AUTO_INCREMENT=17
+
+;
+
+-- ----------------------------
+-- Records of books
+-- ----------------------------
+BEGIN;
+INSERT INTO `books` VALUES ('1', 'To Kill a Mockingbird', 'Harper Lee', '10.99');
+INSERT INTO `books` VALUES ('2', '1984', 'George Orwell', '11.99');
+INSERT INTO `books` VALUES ('3', 'Pride and Prejudice', 'Jane Austen', '9.99');
+INSERT INTO `books` VALUES ('4', 'The Catcher in the Rye', 'J.D. Salinger', '10.49');
+INSERT INTO `books` VALUES ('5', 'Brave New World', 'Aldous Huxley', '11.49');
+INSERT INTO `books` VALUES ('6', 'Moby-Dick', 'Herman Melville', '13.99');
+INSERT INTO `books` VALUES ('7', 'The Hobbit', 'J.R.R. Tolkien', '14.99');
+INSERT INTO `books` VALUES ('8', 'Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', '15.99');
+INSERT INTO `books` VALUES ('9', 'The Hunger Games', 'Suzanne Collins', '12.49');
+INSERT INTO `books` VALUES ('10', 'The Lord of the Rings', 'J.R.R. Tolkien', '18.99');
+INSERT INTO `books` VALUES ('11', 'The Alchemist', 'Paulo Coelho', '11.99');
+INSERT INTO `books` VALUES ('12', 'Animal Farm', 'George Orwell', '10.99');
+INSERT INTO `books` VALUES ('13', 'The Road', 'Cormac McCarthy', '13.49');
+INSERT INTO `books` VALUES ('14', 'Wuthering Heights', 'Emily Brontë', '10.49');
+INSERT INTO `books` VALUES ('15', 'The Great Gatsby', 'F. Scott Fitzgerald', '9.99');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `clients`
+-- ----------------------------
+DROP TABLE IF EXISTS `clients`;
+CREATE TABLE `clients` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`email`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`balance`  decimal(10,2) NULL DEFAULT 0.00 ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+AUTO_INCREMENT=4
+
+;
+
+-- ----------------------------
+-- Records of clients
+-- ----------------------------
+BEGIN;
+INSERT INTO `clients` VALUES ('1', 'Didier Drogba', 'drogba@mail.com', '1467.52');
+INSERT INTO `clients` VALUES ('2', 'Sergio Ramos', 'ramos@gmail.com', '500.00');
+INSERT INTO `clients` VALUES ('3', 'Zinadine Zidane', 'zina@soc.fr', '1000.05');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `managers`
+-- ----------------------------
+DROP TABLE IF EXISTS `managers`;
+CREATE TABLE `managers` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`email`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL ,
+`sales_count`  int NULL DEFAULT 0 ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+AUTO_INCREMENT=3
+
+;
+
+-- ----------------------------
+-- Records of managers
+-- ----------------------------
+BEGIN;
+INSERT INTO `managers` VALUES ('1', 'Anatolii Trubin', 'trubin@gmail.com', '7');
+INSERT INTO `managers` VALUES ('2', 'Andrii Shevchenko', 'sheva@gmail.com', '8');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for `transactions`
+-- ----------------------------
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE `transactions` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`client_id`  int NULL DEFAULT NULL ,
+`book_id`  int NULL DEFAULT NULL ,
+`transaction_date`  date NULL DEFAULT NULL ,
+`manager_id`  int NULL DEFAULT NULL ,
+PRIMARY KEY (`id`),
+FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+INDEX `client_id` (`client_id`) USING BTREE ,
+INDEX `book_id` (`book_id`) USING BTREE 
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+AUTO_INCREMENT=14
+
+;
+
+-- ----------------------------
+-- Records of transactions
+-- ----------------------------
+BEGIN;
+INSERT INTO `transactions` VALUES ('9', '1', '1', '2024-02-27', '1');
+INSERT INTO `transactions` VALUES ('10', '2', '2', '2024-02-27', '2');
+INSERT INTO `transactions` VALUES ('11', '1', '7', '2024-02-27', '2');
+INSERT INTO `transactions` VALUES ('12', '1', '10', '2024-02-27', '2');
+INSERT INTO `transactions` VALUES ('13', '1', '13', '2024-02-27', '1');
+COMMIT;
+
+-- ----------------------------
+-- Auto increment value for `books`
+-- ----------------------------
+ALTER TABLE `books` AUTO_INCREMENT=17;
+
+-- ----------------------------
+-- Auto increment value for `clients`
+-- ----------------------------
+ALTER TABLE `clients` AUTO_INCREMENT=4;
+
+-- ----------------------------
+-- Auto increment value for `managers`
+-- ----------------------------
+ALTER TABLE `managers` AUTO_INCREMENT=3;
+
+-- ----------------------------
+-- Auto increment value for `transactions`
+-- ----------------------------
+ALTER TABLE `transactions` AUTO_INCREMENT=14;
