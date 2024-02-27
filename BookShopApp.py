@@ -39,14 +39,18 @@ def display_books(cursor):
     if execute_query(cursor, query):
         books_data = cursor.fetchall()
         if books_data:
-            print("\nBooks:")
+            print("\n=====================================")
+            print("           Available Books           ")
+            print("=====================================")
+            print("ID    | Title               | Author")
+            print("-------------------------------------")
             for book_data in books_data:
-                print(f"ID: {book_data[0]}, Title: {book_data[1]}, Author: {book_data[2]}, Price: ${book_data[3]}")
+                print(f"{book_data[0]:<6} | {book_data[1]:<20} | {book_data[2]}")
+            print("-------------------------------------")
         else:
             print("No books found.")
     else:
         print("Error fetching books.")
-
 
 # Function to add a new book
 def add_new_book(cursor):
@@ -63,9 +67,14 @@ def display_clients(cursor):
     query = "SELECT id, name, email, balance FROM clients"
     if execute_query(cursor, query):
         clients_data = cursor.fetchall()
-        print("\nClients:")
+        print("\n=====================================")
+        print("               Clients               ")
+        print("=====================================")
+        print("ID    | Name                | Email")
+        print("-------------------------------------")
         for client_data in clients_data:
-            print(f"ID: {client_data[0]}, Name: {client_data[1]}, Email: {client_data[2]}, Balance: {client_data[3]}")
+            print(f"{client_data[0]:<6} | {client_data[1]:<20} | {client_data[2]}")
+        print("-------------------------------------")
 
 # Function to add a new client
 def add_new_client(cursor):
@@ -81,9 +90,14 @@ def display_managers(cursor):
     query = "SELECT * FROM managers"
     if execute_query(cursor, query):
         managers_data = cursor.fetchall()
-        print("\nManagers:")
+        print("\n=====================================")
+        print("              Managers               ")
+        print("=====================================")
+        print("ID    | Name                | Email")
+        print("-------------------------------------")
         for manager_data in managers_data:
-            print(f"ID: {manager_data[0]}, Name: {manager_data[1]}, Email: {manager_data[2]}, Sales Count: {manager_data[3]}")
+            print(f"{manager_data[0]:<6} | {manager_data[1]:<20} | {manager_data[2]}")
+        print("-------------------------------------")
 
 # Function to add a new manager
 def add_new_manager(cursor):
@@ -144,18 +158,20 @@ def display_transactions(cursor):
     if execute_query(cursor, query):
         transactions_data = cursor.fetchall()
         if transactions_data:
-            print("\nTransactions:")
+            print("\n=====================================")
+            print("             Transactions             ")
+            print("=====================================")
+            print("ID    | Client              | Book                | Manager          | Date")
+            print("--------------------------------------------------------------------------------")
             for transaction_data in transactions_data:
                 transaction_date = transaction_data[4]
                 formatted_date = transaction_date.strftime("%Y-%m-%d %H:%M:%S") if transaction_date else "N/A"
-                print(f"ID: {transaction_data[0]}, Client: {transaction_data[1]}, Book: {transaction_data[2]}, Manager: {transaction_data[3]}, Date: {formatted_date}")
+                print(f"{transaction_data[0]:<6} | {transaction_data[1]:<20} | {transaction_data[2]:<20} | {transaction_data[3]:<16} | {formatted_date}")
+            print("--------------------------------------------------------------------------------")
         else:
             print("No transactions found.")
     else:
         print("Error fetching transactions.")
-
-# Update main menu
-print("10. Show All Transactions")
 
 # Function to display books bought by a client
 def display_books_by_client(cursor):
@@ -164,9 +180,14 @@ def display_books_by_client(cursor):
     if execute_query(cursor, query, (client_id,)):
         books_data = cursor.fetchall()
         if books_data:
-            print(f"\nBooks bought by client with ID {client_id}:")
+            print("\n=====================================")
+            print(f"Books bought by client with ID {client_id}:")
+            print("=====================================")
+            print("ID    | Title               | Author            | Price")
+            print("-------------------------------------")
             for book_data in books_data:
-                print(f"ID: {book_data[0]}, Title: {book_data[1]}, Author: {book_data[2]}, Price: ${book_data[3]}")
+                print(f"{book_data[0]:<6} | {book_data[1]:<20} | {book_data[2]:<18} | ${book_data[3]}")
+            print("-------------------------------------")
         else:
             print(f"No books bought by client with ID {client_id}.")
 
@@ -175,7 +196,9 @@ def main():
     mydb, cursor = connect_to_database()
     if mydb and cursor:
         while True:
-            print("\nBookShop Management System")
+            print("\n=====================================")
+            print("       Welcome to BookShop           ")
+            print("=====================================")
             print("1. Display Books")
             print("2. Add Book")
             print("3. Add Client")
@@ -184,8 +207,8 @@ def main():
             print("6. Display Managers")
             print("7. Sell Book to Client")
             print("8. Display Books Bought by Client")
-            print("9. Exit")
-            print("10. Show All Transactions")
+            print("9. Show All Transactions")
+            print("0. Exit")
 
             choice = input("Enter your choice: ")
 
@@ -206,10 +229,10 @@ def main():
             elif choice == '8':
                 display_books_by_client(cursor)
             elif choice == '9':
+                display_transactions(cursor)
+            elif choice == '0':
                 print("Exiting...")
                 break
-            elif choice == '10':
-                display_transactions(cursor)
             else:
                 print("Invalid choice. Please try again.")
     else:
